@@ -1,10 +1,7 @@
 ﻿using MessageQueueManager.DataModels;
 using MessageQueueManager.Interfaces;
-using Newtonsoft.Json;
 using System;
-using System.IO;
 using System.Messaging;
-using System.Text;
 
 namespace MessageQueueManager.Services
 {
@@ -12,6 +9,12 @@ namespace MessageQueueManager.Services
     {
         private MessageQueue _messageQueue;
         private MessageQueueContext _messageQueueContext;
+        private MessageBuilder _messageBuilder;
+
+        public MessageQueueManager()
+        {
+            _messageBuilder = new MessageBuilder();
+        }
 
         public bool CreateMessageQueue(string queueName)
         {
@@ -38,24 +41,6 @@ namespace MessageQueueManager.Services
             return true;
         }
 
-        public bool IsExist(string queueName)
-        {
-            _messageQueueContext = MessageQueueContextBuilder.GetContext(queueName);
-
-            if (string.IsNullOrEmpty(_messageQueueContext.Path))
-            {
-                return false;
-            }
-
-            if (MessageQueue.Exists(_messageQueueContext.Path))
-            {
-                _messageQueue = new MessageQueue(_messageQueueContext.Path);
-                return true;
-            }
-
-            return false;
-        }
-
         public bool SendMessage(string message)
         {
             if (string.IsNullOrEmpty(message))
@@ -68,7 +53,7 @@ namespace MessageQueueManager.Services
                 return false;
             }
 
-            var messageQueueMessage = CreateMesasge(message);
+            var messageQueueMessage = _messageBuilder.CreateMesasge(message);
             if (messageQueueMessage == null)
             {
                 return false;
@@ -86,11 +71,6 @@ namespace MessageQueueManager.Services
 
         public string ReadMessage()
         {
-            if (_messageQueue == null)
-            {
-                return string.Empty;
-            }
-
             if (!MessageQueue.Exists(_messageQueue.Path))
             {
                 return string.Empty;
@@ -102,33 +82,26 @@ namespace MessageQueueManager.Services
             {
                 return string.Empty;
             }
-            return DeserializeToJsonMessage(message);
+
+            return _messageBuilder.DeserializeToJsonMessage(message);
         }
 
-        private Message CreateMesasge(string message)
+        public bool IsExist(string queueName)
         {
-            if (string.IsNullOrEmpty(message))
+            _messageQueueContext = MessageQueueContextBuilder.GetContext(queueName);
+
+            if (string.IsNullOrEmpty(_messageQueueContext.Path))
             {
-                return null;
+                return false;
             }
 
-            return new Message
+            if (MessageQueue.Exists(_messageQueueContext.Path))
             {
-                BodyStream = SerializeToJsonMessage(message)
-            };
-        }
+                _messageQueue = new MessageQueue(_messageQueueContext.Path);
+                return true;
+            }
 
-        private MemoryStream SerializeToJsonMessage(string message)
-        {
-            var jsonResult = JsonConvert.SerializeObject(message);
-            return new MemoryStream(Encoding.Default.GetBytes(jsonResult));
-        }
-
-        private string DeserializeToJsonMessage(Message message)
-        {
-            var messageReader = new StreamReader(message.BodyStream);
-            var jsonBody = messageReader.ReadToEnd();
-            return JsonConvert.DeserializeObject<string>(jsonBody);
+            return false;
         }
     }
 }

@@ -14,8 +14,7 @@ namespace MessageQueueClient
             InitializeComponent();
             InitializeMessageQueue();
         }
-
-
+        
         private void btn_send_message_Click(object sender, EventArgs e)
         {
             _messageQueueService.SendMessage(tb_message.Text);

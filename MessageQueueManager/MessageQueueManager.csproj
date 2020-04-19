@@ -50,6 +50,7 @@
     <Compile Include="DataModels\MessageQueueConfigurationModel.cs" />
     <Compile Include="Interfaces\ILogService.cs" />
     <Compile Include="Interfaces\IMessageQueueManager.cs" />
+    <Compile Include="Services\MessageBuilder.cs" />
     <Compile Include="Services\SettingsManager.cs" />
     <Compile Include="Services\LogService.cs" />
     <Compile Include="Services\MessageQueueContextBuilder.cs" />

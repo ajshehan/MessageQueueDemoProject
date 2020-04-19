@@ -98,7 +98,7 @@
             this.btn_Clear.Name = "btn_Clear";
             this.btn_Clear.Size = new System.Drawing.Size(84, 23);
             this.btn_Clear.TabIndex = 9;
-            this.btn_Clear.Text = "Claer";
+            this.btn_Clear.Text = "Clear";
             this.btn_Clear.UseVisualStyleBackColor = true;
             this.btn_Clear.Click += new System.EventHandler(this.btn_Clear_Click);
             // 
