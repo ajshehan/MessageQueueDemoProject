@@ -1,0 +1,25 @@
+# Directories to ignore
+.vs/
+obj/
+bin/
+
+# File types to ignore
+*.csproj.user
+*.DotSettings*
+*.vspscc
+*.vssscc
+*.suo
+*.bak
+*.log
+*.csproj.sitecore
+*.example
+*.disabled
+*.pubxml.user
+Testresult.xml
+
+# Paths to ignore
+/**/packages/*/
+/node_modules
+/lib/license.xml
+!/lib/**/bin/
+!/deploy/Azure PaaS/Sitecore Azure Toolkit/resources/9.0.2/CargoPayloads/**/bin
