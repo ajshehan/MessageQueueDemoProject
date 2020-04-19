@@ -1,14 +1,14 @@
 ﻿using MessageQueueManager.DataModels;
-using MessageQueueManager.Services;
+using MessageQueueManager.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Messaging;
 using System.Text;
 
-namespace MessageQueueManager
+namespace MessageQueueManager.Services
 {
-    public class MessageQueueManager : Interfaces.IMessageQueueManager
+    public class MessageQueueManager : IMessageQueueManager
     {
         private MessageQueue _messageQueue;
         private MessageQueueContext _messageQueueContext;
@@ -79,6 +79,11 @@ namespace MessageQueueManager
             return true;
         }
 
+        public bool SendTransactionalMessage(string message)
+        {
+            return true;
+        }
+
         public string ReadMessage()
         {
             if (_messageQueue == null)
@@ -91,13 +96,13 @@ namespace MessageQueueManager
                 return string.Empty;
             }
 
-            _messageQueue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
             var message = _messageQueue.Receive(TimeSpan.FromSeconds(20), MessageQueueTransactionType.Single);
+
             if (message == null)
             {
                 return string.Empty;
             }
-            return message.Body.ToString();
+            return DeserializeToJsonMessage(message);
         }
 
         private Message CreateMesasge(string message)
@@ -117,6 +122,13 @@ namespace MessageQueueManager
         {
             var jsonResult = JsonConvert.SerializeObject(message);
             return new MemoryStream(Encoding.Default.GetBytes(jsonResult));
+        }
+
+        private string DeserializeToJsonMessage(Message message)
+        {
+            var messageReader = new StreamReader(message.BodyStream);
+            var jsonBody = messageReader.ReadToEnd();
+            return JsonConvert.DeserializeObject<string>(jsonBody);
         }
     }
 }

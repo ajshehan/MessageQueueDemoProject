@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageQueueManager", "MessageQueueManager\MessageQueueManager.csproj", "{6921550C-3966-4326-92ED-E9B56EBFD67F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageQueueClient", "MessageQueueClient\MessageQueueClient.csproj", "{943DD574-A097-4358-9B69-553027912BC2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentClient", "MessageQueueClient\PaymentClient.csproj", "{943DD574-A097-4358-9B69-553027912BC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

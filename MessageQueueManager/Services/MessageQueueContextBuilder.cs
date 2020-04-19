@@ -22,6 +22,7 @@ namespace MessageQueueManager.Services
                 return string.Empty;
             }
 
+            //Private$\PaymentQueue
             return $"{Environment.MachineName}\\{(IsPrivateQueue() ? "Private$\\" : string.Empty)}{messageQueueName}";
             //return $"DIRECT=TCP:127.0.0.1\\{(isPrivateQueue ? "Private$\\" : string.Empty)}{queueName}";
             //return $"OS:{Environment.MachineName}\\{(IsPrivateQueue ? "Private$\\" : string.Empty)}{messageQueueName}";

@@ -1,0 +1,12 @@
+{
+  "MessageQueueConfigurations": [
+    {
+      "Name": "EmailCampainRegistrationQueue",
+      "IpAddress": "",
+      "IsPrivateQueue": "",
+      "IsTcpEnabled": "",
+      "IsTransactional": "",
+      "IsPersistQueueEnabled": "true"
+    }
+  ]
+}

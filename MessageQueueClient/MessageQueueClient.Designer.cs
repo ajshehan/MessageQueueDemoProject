@@ -34,6 +34,7 @@
             this.Lbl_received_messages = new System.Windows.Forms.Label();
             this.tb_received_messages = new System.Windows.Forms.TextBox();
             this.btn_read = new System.Windows.Forms.Button();
+            this.btn_Clear = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lbl_message_to_send
@@ -78,12 +79,12 @@
             this.tb_received_messages.Multiline = true;
             this.tb_received_messages.Name = "tb_received_messages";
             this.tb_received_messages.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tb_received_messages.Size = new System.Drawing.Size(452, 215);
+            this.tb_received_messages.Size = new System.Drawing.Size(452, 142);
             this.tb_received_messages.TabIndex = 7;
             // 
             // btn_read
             // 
-            this.btn_read.Location = new System.Drawing.Point(546, 292);
+            this.btn_read.Location = new System.Drawing.Point(546, 38);
             this.btn_read.Name = "btn_read";
             this.btn_read.Size = new System.Drawing.Size(84, 23);
             this.btn_read.TabIndex = 8;
@@ -91,11 +92,22 @@
             this.btn_read.UseVisualStyleBackColor = true;
             this.btn_read.Click += new System.EventHandler(this.btn_read_Click);
             // 
+            // btn_Clear
+            // 
+            this.btn_Clear.Location = new System.Drawing.Point(546, 219);
+            this.btn_Clear.Name = "btn_Clear";
+            this.btn_Clear.Size = new System.Drawing.Size(84, 23);
+            this.btn_Clear.TabIndex = 9;
+            this.btn_Clear.Text = "Claer";
+            this.btn_Clear.UseVisualStyleBackColor = true;
+            this.btn_Clear.Click += new System.EventHandler(this.btn_Clear_Click);
+            // 
             // MessageQueueClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(642, 330);
+            this.ClientSize = new System.Drawing.Size(642, 257);
+            this.Controls.Add(this.btn_Clear);
             this.Controls.Add(this.btn_read);
             this.Controls.Add(this.tb_received_messages);
             this.Controls.Add(this.Lbl_received_messages);
@@ -117,6 +129,7 @@
         private System.Windows.Forms.Label Lbl_received_messages;
         private System.Windows.Forms.TextBox tb_received_messages;
         private System.Windows.Forms.Button btn_read;
+        private System.Windows.Forms.Button btn_Clear;
     }
 }
 
