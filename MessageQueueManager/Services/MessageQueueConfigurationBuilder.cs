@@ -3,24 +3,24 @@ using System;
 
 namespace MessageQueueManager.Services
 {
-    public class MessageQueueConfigurationBuilder
+    public static class MessageQueueConfigurationBuilder
     {
+        private static MessageQueueConfigurations _queueConfigurations;
+
         public static MessageQueueConfigurations GetQueueConfigurations(string messageQueueName)
         {
-            var queueConfigurations = SettingsManager.GetMessageQueueConfigurations(messageQueueName);
-            if (queueConfigurations == null)
+            if (_queueConfigurations == null)
             {
-                return null;
+                _queueConfigurations = SettingsManager.GetMessageQueueConfigurations(messageQueueName);
+                CreateMessageQueuePath();
             }
 
-            CreateMessageQueuePath(queueConfigurations);
-
-            return queueConfigurations;
+            return _queueConfigurations;
         }
 
-        private static void CreateMessageQueuePath(MessageQueueConfigurations queueConfigurations)
+        private static void CreateMessageQueuePath()
         {
-            queueConfigurations.Path = $"{Environment.MachineName}\\{(queueConfigurations.IsPrivateQueue ? "Private$\\" : string.Empty)}{queueConfigurations.Name}";
+            _queueConfigurations.Path = $"{Environment.MachineName}\\{(_queueConfigurations.IsPrivateQueue ? "Private$\\" : string.Empty)}{_queueConfigurations.Name}";
         }
     }
 }
