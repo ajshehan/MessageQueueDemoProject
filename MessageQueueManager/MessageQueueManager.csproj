@@ -46,18 +46,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants\AppSettingsKeys.cs" />
-    <Compile Include="DataModels\IEnumarable.cs" />
+    <Compile Include="DataModels\ConfigurationsList.cs" />
     <Compile Include="DataModels\MessageQueueConfigurations.cs" />
     <Compile Include="Interfaces\ILogService.cs" />
     <Compile Include="Interfaces\IMessageQueueManager.cs" />
     <Compile Include="Services\MessageBuilder.cs" />
     <Compile Include="Services\SettingsManager.cs" />
     <Compile Include="Services\LogService.cs" />
-    <Compile Include="Services\MessageQueueContextBuilder.cs" />
-    <Compile Include="Services\MessageQueueManager.cs" />
+    <Compile Include="Services\MessageQueueConfigurationBuilder.cs" />
+    <Compile Include="Services\MessageQueueService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DataModels\MessageQueueContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

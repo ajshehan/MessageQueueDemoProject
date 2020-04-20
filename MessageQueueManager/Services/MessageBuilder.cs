@@ -5,9 +5,9 @@ using System.Text;
 
 namespace MessageQueueManager.Services
 {
-    public class MessageBuilder
+    public static class MessageBuilder
     {
-        public Message CreateMesasge(string message)
+        public static Message CreateMesasge(string message)
         {
             if (string.IsNullOrEmpty(message))
             {
@@ -20,17 +20,27 @@ namespace MessageQueueManager.Services
             };
         }
 
-        private Stream SerializeToJsonMessage(string message)
+        public static string GetMesasgeContent(Message message)
         {
-            var jsonResult = JsonConvert.SerializeObject(message);
-            return new MemoryStream(Encoding.Default.GetBytes(jsonResult));
+            if (message == null)
+            {
+                return string.Empty;
+            }
+
+            return DeserializeToJsonMessage(message);
         }
 
-        public string DeserializeToJsonMessage(Message message)
+        private static string DeserializeToJsonMessage(Message message)
         {
             var messageReader = new StreamReader(message.BodyStream);
             var jsonBody = messageReader.ReadToEnd();
             return JsonConvert.DeserializeObject<string>(jsonBody);
+        }
+
+        private static Stream SerializeToJsonMessage(string message)
+        {
+            var jsonResult = JsonConvert.SerializeObject(message);
+            return new MemoryStream(Encoding.Default.GetBytes(jsonResult));
         }
     }
 }
