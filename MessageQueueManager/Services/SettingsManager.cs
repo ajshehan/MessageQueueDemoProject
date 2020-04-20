@@ -1,17 +1,48 @@
-﻿using System.Configuration;
+﻿using MessageQueueManager.DataModels;
+using Newtonsoft.Json;
+using System.IO;
+using System.Linq;
 
 namespace MessageQueueManager.Services
 {
     public static class SettingsManager
     {
-        public static bool GetBool(string appSettingKey)
+        //TODO:  move to a configuration file
+        private static string _configuationFilePath = @"F:\Sample Projects\MessageQueueDemoProject\MessageQueueManager\App_Config\MessageQueueConfigurations.json";
+        private static ConfigurationsList _configurationsList { get; set; }
+        private static ConfigurationsList ConfigurationsList
         {
-            var value = ConfigurationManager.AppSettings[appSettingKey];
-            if(bool.TryParse(value, out bool convertedValue))
+            get
             {
-                return convertedValue;
+                if(_configurationsList == null)
+                {
+                    return _configurationsList = GetSettingsObject();
+                }
+
+                return _configurationsList;
             }
-            return false;
+        }
+
+        public static MessageQueueConfigurations GetMessageQueueConfigurations(string queueName)
+        {
+             return ConfigurationsList.MessageQueueConfigurations
+                .FirstOrDefault(i => i.Name.ToLowerInvariant().Equals(queueName.ToLowerInvariant()));
+        }
+
+        private static ConfigurationsList GetSettingsObject()
+        {
+            var settingsObject = JsonConvert.DeserializeObject<ConfigurationsList>(ReadConfigurationFile());
+            return settingsObject;
+        }
+
+        private static string ReadConfigurationFile()
+        {
+            if(!File.Exists(_configuationFilePath))
+            {
+                return string.Empty;
+            }
+
+            return File.ReadAllText(_configuationFilePath);
         }
     }
 }

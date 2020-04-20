@@ -1,8 +1,9 @@
 ﻿namespace MessageQueueManager.Interfaces
 {
-    public interface IMessageQueueManager
+    public interface IMessageQueueService
     {
-        bool SendMessage(string message);
-        string ReadMessage();
+        bool SendMessage(string queueName, string message);
+
+        string ReadMessage(string queueName);
     }
 }
