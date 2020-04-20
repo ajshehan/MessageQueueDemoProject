@@ -73,7 +73,9 @@ namespace MessageQueueManager.Services
 
         private MessageQueue GetMessageQueue(string queueName)
         {
-            if (!MessageQueue.Exists(queueName))
+            var messageQueueConfigurations = MessageQueueConfigurationBuilder.GetQueueConfigurations(queueName);
+
+            if (!MessageQueue.Exists(messageQueueConfigurations.Path))
             {
                 return null;
             }

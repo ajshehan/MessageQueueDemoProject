@@ -6,7 +6,7 @@ namespace MessageQueueClient
 {
     public partial class MessageQueueClient : Form
     {
-        private const string _paymentsQueueName = "EmailCampainRegistrationQueue";
+        private const string _paymentsQueueName = "PaymentQueue";
 
         private readonly MessageQueueService _messageQueueService;
 
