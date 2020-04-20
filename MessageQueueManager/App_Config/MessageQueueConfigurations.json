@@ -3,9 +3,9 @@
     {
       "Name": "EmailCampainRegistrationQueue",
       "IpAddress": "",
-      "IsPrivateQueue": "",
-      "IsTcpEnabled": "",
-      "IsTransactional": "",
+      "IsPrivateQueue": "true",
+      "IsTcpEnabled": "false",
+      "IsTransactional": "true",
       "IsPersistQueueEnabled": "true"
     }
   ]

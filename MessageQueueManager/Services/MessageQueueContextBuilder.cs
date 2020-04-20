@@ -23,14 +23,14 @@ namespace MessageQueueManager.Services
             }
 
             //Private$\PaymentQueue
-            return $"{Environment.MachineName}\\{(IsPrivateQueue() ? "Private$\\" : string.Empty)}{messageQueueName}";
+            return $"{Environment.MachineName}\\{(IsPrivateQueue(messageQueueName) ? "Private$\\" : string.Empty)}{messageQueueName}";
             //return $"DIRECT=TCP:127.0.0.1\\{(isPrivateQueue ? "Private$\\" : string.Empty)}{queueName}";
             //return $"OS:{Environment.MachineName}\\{(IsPrivateQueue ? "Private$\\" : string.Empty)}{messageQueueName}";
         }
         
-        private static bool IsPrivateQueue()
+        private static bool IsPrivateQueue(string messageQueueName)
         {
-            return SettingsManager.GetBool(AppSettingsKeys.IsPrivateQueue);
+            return SettingsManager.GetBoolSetting(messageQueueName, AppSettingsKeys.IsPrivateQueue);
         }
 
         private bool IsTcpEnabled()

@@ -7,9 +7,9 @@ namespace MessageQueueManager.Services
 {
     public class MessageQueueManager : IMessageQueueManager
     {
-        private MessageQueue _messageQueue;
-        private MessageQueueContext _messageQueueContext;
         private MessageBuilder _messageBuilder;
+        private MessageQueueContext _messageQueueContext;
+        private MessageQueue _messageQueue;
 
         public MessageQueueManager()
         {
@@ -97,7 +97,6 @@ namespace MessageQueueManager.Services
 
             if (MessageQueue.Exists(_messageQueueContext.Path))
             {
-                _messageQueue = new MessageQueue(_messageQueueContext.Path);
                 return true;
             }
 

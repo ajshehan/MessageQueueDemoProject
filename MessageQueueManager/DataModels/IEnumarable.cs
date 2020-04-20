@@ -1,7 +1,6 @@
 ﻿namespace MessageQueueManager.DataModels
 {
-    public class MessageQueueConfigurationModel
+    internal interface IEnumarable
     {
-
     }
 }

@@ -47,7 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\AppSettingsKeys.cs" />
-    <Compile Include="DataModels\MessageQueueConfigurationModel.cs" />
+    <Compile Include="DataModels\IEnumarable.cs" />
+    <Compile Include="DataModels\MessageQueueConfigurations.cs" />
     <Compile Include="Interfaces\ILogService.cs" />
     <Compile Include="Interfaces\IMessageQueueManager.cs" />
     <Compile Include="Services\MessageBuilder.cs" />
