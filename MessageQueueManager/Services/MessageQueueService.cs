@@ -80,7 +80,7 @@ namespace MessageQueueManager.Services
                 return null;
             }
 
-            return new MessageQueue(queueName);
+            return new MessageQueue(messageQueueConfigurations.Path);
         }
 
         private MessageQueue CreateMessageQueue(string queueName)
@@ -97,7 +97,7 @@ namespace MessageQueueManager.Services
                 return null;
             }
 
-            var messageQueue = GetMessageQueue(messageQueueConfigurations.Path);
+            var messageQueue = GetMessageQueue(messageQueueConfigurations.Name);
             if (messageQueue != null)
             {
                 return messageQueue;

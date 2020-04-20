@@ -1,7 +1,7 @@
 {
   "MessageQueueConfigurations": [
     {
-      "Name": "EmailCampainRegistrationQueue",
+      "Name": "PaymentQueue",
       "IpAddress": "",
       "IsPrivateQueue": "true",
       "IsTcpEnabled": "false",
