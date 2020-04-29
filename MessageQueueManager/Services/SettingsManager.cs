@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MessageQueueManager.Services
 {
@@ -10,39 +11,43 @@ namespace MessageQueueManager.Services
         //TODO:  move to a configuration file
         private static string _configuationFilePath = @"F:\Sample Projects\MessageQueueDemoProject\MessageQueueManager\App_Config\MessageQueueConfigurations.json";
         private static ConfigurationsList _configurationsList { get; set; }
-        private static ConfigurationsList ConfigurationsList
+
+        private async static Task<ConfigurationsList> GetConfigurationsList()
         {
-            get
+            if (_configurationsList == null)
             {
-                if(_configurationsList == null)
-                {
-                    return _configurationsList = GetSettingsObject();
-                }
-
-                return _configurationsList;
+                return _configurationsList = await GetSettingsObject();
             }
+
+            return _configurationsList;
         }
 
-        public static MessageQueueConfigurations GetMessageQueueConfigurations(string queueName)
+        public async static Task<MessageQueueConfigurations> GetMessageQueueConfigurations(string queueName)
         {
-             return ConfigurationsList.MessageQueueConfigurations
-                .FirstOrDefault(i => i.Name.ToLowerInvariant().Equals(queueName.ToLowerInvariant()));
+            var configurationsList = await GetConfigurationsList();
+
+            return configurationsList.MessageQueueConfigurations
+               .FirstOrDefault(i => i.Name.ToLowerInvariant().Equals(queueName.ToLowerInvariant()));
         }
 
-        private static ConfigurationsList GetSettingsObject()
+        private async static Task<ConfigurationsList> GetSettingsObject()
         {
-            var settingsObject = JsonConvert.DeserializeObject<ConfigurationsList>(ReadConfigurationFile());
+            var settingsFileCotnent = await ReadConfigurationFile();
+            var settingsObject = JsonConvert.DeserializeObject<ConfigurationsList>(settingsFileCotnent);
+
             return settingsObject;
         }
 
-        private static string ReadConfigurationFile()
+        private async static Task<string> ReadConfigurationFile()
         {
-            if(!File.Exists(_configuationFilePath))
+            if (!File.Exists(_configuationFilePath))
             {
                 return string.Empty;
             }
 
-            return File.ReadAllText(_configuationFilePath);
+            var fileContent = await Task.Run(() => File.ReadAllText(_configuationFilePath));
+
+            return fileContent;
         }
     }
 }

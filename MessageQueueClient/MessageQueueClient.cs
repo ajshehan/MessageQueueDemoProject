@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using MessageQueueManager.Services;
 
@@ -15,15 +16,16 @@ namespace MessageQueueClient
             InitializeComponent();
             _messageQueueService = new MessageQueueService();
         }
-        
-        private void btn_send_message_Click(object sender, EventArgs e)
+
+        private async void btn_send_message_Click(object sender, EventArgs e)
         {
-            _messageQueueService.SendMessage(_paymentsQueueName, tb_message.Text);
+            await _messageQueueService.SendMessageAsync(_paymentsQueueName, tb_message.Text);
         }
 
-        private void btn_read_Click(object sender, EventArgs e)
+        private async void btn_read_Click(object sender, EventArgs e)
         {
-            var message = _messageQueueService.ReadMessage(_paymentsQueueName);
+            var message = await _messageQueueService.ReadMessageAsync(_paymentsQueueName);
+
             tb_received_messages.Text = $"{tb_received_messages.Text} \n {message}";
         }
 

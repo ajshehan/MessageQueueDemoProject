@@ -1,6 +1,7 @@
 ﻿using MessageQueueManager.Interfaces;
 using System;
 using System.Messaging;
+using System.Threading.Tasks;
 
 namespace MessageQueueManager.Services
 {
@@ -8,14 +9,14 @@ namespace MessageQueueManager.Services
     {
         private readonly int TimeToPause = 20;
 
-        public bool SendMessage(string queueName, string message)
+        public async Task<bool> SendMessageAsync(string queueName, string message)
         {
             if (string.IsNullOrEmpty(message))
             {
                 return false;
             }
 
-            var messageQueue = GetOrCreateMessageQueue(queueName);
+            var messageQueue = await GetOrCreateMessageQueue(queueName);
             if (messageQueue == null)
             {
                 return false;
@@ -27,20 +28,27 @@ namespace MessageQueueManager.Services
                 return false;
             }
 
-            messageQueue.Send(messageQueueMessage);
+            await Task.Run(() =>
+                messageQueue.Send(messageQueueMessage)
+            );
 
             return true;
         }
 
-        public string ReadMessage(string queueName)
+        public async Task<string> ReadMessageAsync(string queueName)
         {
             var messageQueue = GetMessageQueue(queueName);
             if (messageQueue == null)
             {
-                return string.Empty;    
+                return string.Empty;
             }
 
-            var message = messageQueue.Receive(TimeSpan.FromSeconds(TimeToPause), MessageQueueTransactionType.Single);
+            Message message = null;
+
+            await Task.Run(() =>
+                message = messageQueue.Receive(TimeSpan.FromSeconds(TimeToPause), MessageQueueTransactionType.Single)
+            );
+
             if (message == null)
             {
                 return string.Empty;
@@ -59,13 +67,13 @@ namespace MessageQueueManager.Services
             return true;
         }
 
-        private MessageQueue GetOrCreateMessageQueue(string queueName)
+        private async Task<MessageQueue> GetOrCreateMessageQueue(string queueName)
         {
             var messageQueue = GetMessageQueue(queueName);
 
             if (messageQueue == null)
             {
-                messageQueue = CreateMessageQueue(queueName);
+                messageQueue = await CreateMessageQueue(queueName);
             }
 
             return messageQueue;
@@ -83,7 +91,7 @@ namespace MessageQueueManager.Services
             return new MessageQueue(messageQueueConfigurations.Path);
         }
 
-        private MessageQueue CreateMessageQueue(string queueName)
+        private async Task<MessageQueue> CreateMessageQueue(string queueName)
         {
             var messageQueueConfigurations = MessageQueueConfigurationBuilder.GetQueueConfigurations(queueName);
 
@@ -103,7 +111,10 @@ namespace MessageQueueManager.Services
                 return messageQueue;
             }
 
-            messageQueue = MessageQueue.Create(messageQueueConfigurations.Path);
+            await Task.Run(() =>
+                messageQueue = MessageQueue.Create(messageQueueConfigurations.Path)
+            );
+
             if (messageQueue == null)
             {
                 return null;

@@ -1,9 +1,13 @@
-﻿namespace MessageQueueManager.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace MessageQueueManager.Interfaces
 {
     public interface IMessageQueueService
     {
-        bool SendMessage(string queueName, string message);
+        Task<bool> SendMessageAsync(string queueName, string message);
 
-        string ReadMessage(string queueName);
+        Task<string> ReadMessageAsync(string queueName);
+
+        bool IsExist(string queueName);
     }
 }

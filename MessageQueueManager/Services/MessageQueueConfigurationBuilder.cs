@@ -9,11 +9,15 @@ namespace MessageQueueManager.Services
 
         public static MessageQueueConfigurations GetQueueConfigurations(string messageQueueName)
         {
-            if (_queueConfigurations == null)
+            if (_queueConfigurations != null)
             {
-                _queueConfigurations = SettingsManager.GetMessageQueueConfigurations(messageQueueName);
-                CreateMessageQueuePath();
+                return _queueConfigurations;
             }
+
+            var results = SettingsManager.GetMessageQueueConfigurations(messageQueueName);
+            _queueConfigurations = results.Result;
+
+            CreateMessageQueuePath();
 
             return _queueConfigurations;
         }
