@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MessageQueueManager.Interfaces;
 using MessageQueueManager.Services;
 
 namespace MessageQueueClient
@@ -9,7 +10,7 @@ namespace MessageQueueClient
     {
         private const string _paymentsQueueName = "PaymentQueue";
 
-        private readonly MessageQueueService _messageQueueService;
+        private readonly IMessageQueueService _messageQueueService;
 
         public MessageQueueClient()
         {

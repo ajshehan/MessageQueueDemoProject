@@ -1,20 +1,32 @@
 ﻿using MessageQueueManager.DataModels;
+using MessageQueueManager.Interfaces;
 using System;
 
 namespace MessageQueueManager.Services
 {
-    public static class MessageQueueConfigurationBuilder
+    public class MessageQueueConfigurationBuilder : IMessageQueueConfigurationBuilder
     {
-        private static MessageQueueConfigurations _queueConfigurations;
+        private MessageQueueConfigurations _queueConfigurations;
+        private ISettingsService _settingsManager;
 
-        public static MessageQueueConfigurations GetQueueConfigurations(string messageQueueName)
+        public MessageQueueConfigurationBuilder() : this(new SettingsService())
+        {
+
+        }
+
+        public MessageQueueConfigurationBuilder(ISettingsService settingsManager)
+        {
+            _settingsManager = settingsManager;
+        }
+
+        public MessageQueueConfigurations GetQueueConfigurations(string messageQueueName)
         {
             if (_queueConfigurations != null)
             {
                 return _queueConfigurations;
             }
 
-            var results = SettingsManager.GetMessageQueueConfigurations(messageQueueName);
+            var results = _settingsManager.GetMessageQueueConfigurations(messageQueueName);
             _queueConfigurations = results.Result;
 
             CreateMessageQueuePath();
@@ -22,7 +34,7 @@ namespace MessageQueueManager.Services
             return _queueConfigurations;
         }
 
-        private static void CreateMessageQueuePath()
+        private void CreateMessageQueuePath()
         {
             _queueConfigurations.Path = $"{Environment.MachineName}\\{(_queueConfigurations.IsPrivateQueue ? "Private$\\" : string.Empty)}{_queueConfigurations.Name}";
         }

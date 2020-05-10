@@ -8,6 +8,20 @@ namespace MessageQueueManager.Services
     public class MessageQueueService : IMessageQueueService
     {
         private readonly int TimeToPause = 20;
+        private IMessageQueueConfigurationBuilder _messageQueueConfigurationBuilder;
+        private IMessageBuilderService _messageBuilderService;
+
+        public MessageQueueService() : this(new MessageQueueConfigurationBuilder(), new MessageBuilderService())
+        {
+
+        }
+
+        public MessageQueueService(IMessageQueueConfigurationBuilder messageQueueConfigurationBuilder,
+            IMessageBuilderService messageBuilderService)
+        {
+            _messageQueueConfigurationBuilder = messageQueueConfigurationBuilder;
+            _messageBuilderService = messageBuilderService;
+        }
 
         public async Task<bool> SendMessageAsync(string queueName, string message)
         {
@@ -22,15 +36,16 @@ namespace MessageQueueManager.Services
                 return false;
             }
 
-            var messageQueueMessage = MessageBuilder.CreateMesasge(message);
+            var messageQueueMessage = _messageBuilderService.CreateMesasge(message);
             if (messageQueueMessage == null)
             {
                 return false;
             }
 
             await Task.Run(() =>
-                messageQueue.Send(messageQueueMessage)
-            );
+            {
+                messageQueue.Send(messageQueueMessage);
+            });
 
             return true;
         }
@@ -43,18 +58,17 @@ namespace MessageQueueManager.Services
                 return string.Empty;
             }
 
-            Message message = null;
-
-            await Task.Run(() =>
-                message = messageQueue.Receive(TimeSpan.FromSeconds(TimeToPause), MessageQueueTransactionType.Single)
-            );
+            var message = await Task.Run(() =>
+            {
+                return messageQueue.Receive(TimeSpan.FromSeconds(TimeToPause), MessageQueueTransactionType.Single);
+            });
 
             if (message == null)
             {
                 return string.Empty;
             }
 
-            return MessageBuilder.GetMesasgeContent(message);
+            return _messageBuilderService.GetMesasgeContent(message);
         }
 
         public bool IsExist(string queueName)
@@ -81,7 +95,7 @@ namespace MessageQueueManager.Services
 
         private MessageQueue GetMessageQueue(string queueName)
         {
-            var messageQueueConfigurations = MessageQueueConfigurationBuilder.GetQueueConfigurations(queueName);
+            var messageQueueConfigurations = _messageQueueConfigurationBuilder.GetQueueConfigurations(queueName);
 
             if (!MessageQueue.Exists(messageQueueConfigurations.Path))
             {
@@ -93,7 +107,7 @@ namespace MessageQueueManager.Services
 
         private async Task<MessageQueue> CreateMessageQueue(string queueName)
         {
-            var messageQueueConfigurations = MessageQueueConfigurationBuilder.GetQueueConfigurations(queueName);
+            var messageQueueConfigurations = _messageQueueConfigurationBuilder.GetQueueConfigurations(queueName);
 
             if (messageQueueConfigurations == null)
             {

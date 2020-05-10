@@ -1,4 +1,5 @@
 ﻿using MessageQueueManager.DataModels;
+using MessageQueueManager.Interfaces;
 using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
@@ -6,13 +7,21 @@ using System.Threading.Tasks;
 
 namespace MessageQueueManager.Services
 {
-    public static class SettingsManager
+    public class SettingsService : ISettingsService
     {
         //TODO:  move to a configuration file
         private static string _configuationFilePath = @"F:\Sample Projects\MessageQueueDemoProject\MessageQueueManager\App_Config\MessageQueueConfigurations.json";
-        private static ConfigurationsList _configurationsList { get; set; }
+        private ConfigurationsList _configurationsList { get; set; }
 
-        private async static Task<ConfigurationsList> GetConfigurationsList()
+        public async Task<MessageQueueConfigurations> GetMessageQueueConfigurations(string queueName)
+        {
+            var configurationsList = await GetConfigurationsList();
+
+            return configurationsList.MessageQueueConfigurations
+               .FirstOrDefault(i => i.Name.ToLowerInvariant().Equals(queueName.ToLowerInvariant()));
+        }
+
+        private async Task<ConfigurationsList> GetConfigurationsList()
         {
             if (_configurationsList == null)
             {
@@ -22,15 +31,7 @@ namespace MessageQueueManager.Services
             return _configurationsList;
         }
 
-        public async static Task<MessageQueueConfigurations> GetMessageQueueConfigurations(string queueName)
-        {
-            var configurationsList = await GetConfigurationsList();
-
-            return configurationsList.MessageQueueConfigurations
-               .FirstOrDefault(i => i.Name.ToLowerInvariant().Equals(queueName.ToLowerInvariant()));
-        }
-
-        private async static Task<ConfigurationsList> GetSettingsObject()
+        private async Task<ConfigurationsList> GetSettingsObject()
         {
             var settingsFileCotnent = await ReadConfigurationFile();
             var settingsObject = JsonConvert.DeserializeObject<ConfigurationsList>(settingsFileCotnent);
@@ -38,7 +39,7 @@ namespace MessageQueueManager.Services
             return settingsObject;
         }
 
-        private async static Task<string> ReadConfigurationFile()
+        private async Task<string> ReadConfigurationFile()
         {
             if (!File.Exists(_configuationFilePath))
             {
