@@ -1,8 +1,8 @@
-﻿using System;
+﻿using MessageQueueManager.Interfaces;
+using MessageQueueManager.Services;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MessageQueueManager.Interfaces;
-using MessageQueueManager.Services;
 
 namespace MessageQueueClient
 {
@@ -18,9 +18,11 @@ namespace MessageQueueClient
             _messageQueueService = new MessageQueueService();
         }
 
-        private async void btn_send_message_Click(object sender, EventArgs e)
+        private void btn_send_message_Click(object sender, EventArgs e)
         {
-            await _messageQueueService.SendMessageAsync(_paymentsQueueName, tb_message.Text);
+            _ = Task.Run(async () =>
+                  await _messageQueueService.SendMessageAsync(_paymentsQueueName, tb_message.Text)
+            );
         }
 
         private async void btn_read_Click(object sender, EventArgs e)
