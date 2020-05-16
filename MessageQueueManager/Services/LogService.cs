@@ -2,7 +2,7 @@
 
 namespace MessageQueueManager.Services
 {
-    internal class LogService : ILogService
+    public class LogService : ILogService
     {
         public void Error()
         {

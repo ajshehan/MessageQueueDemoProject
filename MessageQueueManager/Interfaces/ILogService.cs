@@ -1,6 +1,6 @@
 ﻿namespace MessageQueueManager.Interfaces
 {
-    internal interface ILogService
+    public interface ILogService
     {
         void Info();
         void Error();

@@ -7,6 +7,14 @@
       "IsTcpEnabled": "false",
       "IsTransactional": "true",
       "IsPersistQueueEnabled": "true"
+    },
+	{
+      "Name": "EmailQueue",
+      "IpAddress": "",
+      "IsPrivateQueue": "true",
+      "IsTcpEnabled": "false",
+      "IsTransactional": "true",
+      "IsPersistQueueEnabled": "true"
     }
   ]
 }
