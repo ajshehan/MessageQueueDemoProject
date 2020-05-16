@@ -8,6 +8,7 @@ namespace MessageQueueManager.Services
     public class MessageQueueService : IMessageQueueService
     {
         private readonly int TimeToPause = 20;
+
         private IMessageQueueConfigurationBuilder _messageQueueConfigurationBuilder;
         private IMessageBuilderService _messageBuilderService;
 

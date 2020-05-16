@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageQueueManager", "Mess
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentClient", "MessageQueueClient\PaymentClient.csproj", "{943DD574-A097-4358-9B69-553027912BC2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageQueueManager.Tests", "MessageQueueManager.Tests\MessageQueueManager.Tests.csproj", "{3CD87C4A-1A75-4F5B-8033-50DC226F2823}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{943DD574-A097-4358-9B69-553027912BC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{943DD574-A097-4358-9B69-553027912BC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{943DD574-A097-4358-9B69-553027912BC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CD87C4A-1A75-4F5B-8033-50DC226F2823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CD87C4A-1A75-4F5B-8033-50DC226F2823}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CD87C4A-1A75-4F5B-8033-50DC226F2823}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CD87C4A-1A75-4F5B-8033-50DC226F2823}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
