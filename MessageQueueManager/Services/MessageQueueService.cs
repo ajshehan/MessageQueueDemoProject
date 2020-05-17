@@ -53,7 +53,7 @@ namespace MessageQueueManager.Services
 
         public async Task<string> ReadMessageAsync(string queueName)
         {
-            var messageQueue = GetMessageQueue(queueName);
+            var messageQueue = await GetMessageQueue(queueName);
             if (messageQueue == null)
             {
                 return string.Empty;
@@ -84,7 +84,7 @@ namespace MessageQueueManager.Services
 
         private async Task<MessageQueue> GetOrCreateMessageQueue(string queueName)
         {
-            var messageQueue = GetMessageQueue(queueName);
+            var messageQueue = await GetMessageQueue(queueName);
 
             if (messageQueue == null)
             {
@@ -94,9 +94,9 @@ namespace MessageQueueManager.Services
             return messageQueue;
         }
 
-        private MessageQueue GetMessageQueue(string queueName)
+        private async Task<MessageQueue> GetMessageQueue(string queueName)
         {
-            var messageQueueConfigurations = _messageQueueConfigurationBuilder.GetQueueConfigurations(queueName);
+            var messageQueueConfigurations = await _messageQueueConfigurationBuilder.GetQueueConfigurations(queueName);
 
             if (!MessageQueue.Exists(messageQueueConfigurations.Path))
             {
@@ -108,7 +108,7 @@ namespace MessageQueueManager.Services
 
         private async Task<MessageQueue> CreateMessageQueue(string queueName)
         {
-            var messageQueueConfigurations = _messageQueueConfigurationBuilder.GetQueueConfigurations(queueName);
+            var messageQueueConfigurations = await _messageQueueConfigurationBuilder.GetQueueConfigurations(queueName);
 
             if (messageQueueConfigurations == null)
             {
@@ -120,7 +120,7 @@ namespace MessageQueueManager.Services
                 return null;
             }
 
-            var messageQueue = GetMessageQueue(messageQueueConfigurations.Name);
+            var messageQueue = await GetMessageQueue(messageQueueConfigurations.Name);
             if (messageQueue != null)
             {
                 return messageQueue;

@@ -1,9 +1,10 @@
 ﻿using MessageQueueManager.DataModels;
+using System.Threading.Tasks;
 
 namespace MessageQueueManager.Interfaces
 {
     public interface IMessageQueueConfigurationBuilder
     {
-        MessageQueueConfigurations GetQueueConfigurations(string messageQueueName);
+        Task<MessageQueueConfigurations> GetQueueConfigurations(string messageQueueName);
     }
 }

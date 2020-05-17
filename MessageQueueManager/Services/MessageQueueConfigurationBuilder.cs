@@ -1,6 +1,7 @@
 ﻿using MessageQueueManager.DataModels;
 using MessageQueueManager.Interfaces;
 using System;
+using System.Threading.Tasks;
 
 namespace MessageQueueManager.Services
 {
@@ -19,15 +20,15 @@ namespace MessageQueueManager.Services
             _settingsManager = settingsManager;
         }
 
-        public MessageQueueConfigurations GetQueueConfigurations(string messageQueueName)
+        public async Task<MessageQueueConfigurations> GetQueueConfigurations(string messageQueueName)
         {
             if (_queueConfigurations != null)
             {
                 return _queueConfigurations;
             }
 
-            var results = _settingsManager.GetMessageQueueConfigurations(messageQueueName);
-            _queueConfigurations = results.Result;
+            var results = await _settingsManager.GetMessageQueueConfigurations(messageQueueName);
+            _queueConfigurations = results;
 
             CreateMessageQueuePath();
 
