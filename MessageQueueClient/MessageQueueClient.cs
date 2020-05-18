@@ -1,34 +1,35 @@
-﻿using System;
+﻿using MessageQueueManager.Interfaces;
+using MessageQueueManager.Services;
+using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MessageQueueClient
 {
     public partial class MessageQueueClient : Form
     {
-        private const string _paymentsQueue = "EmailCampainRegistrationQueue";
+        private const string _paymentsQueueName = "PaymentQueue";
 
-        private MessageQueueManager.Services.MessageQueueManager _messageQueueService;
+        private readonly IMessageQueueService _messageQueueService;
 
         public MessageQueueClient()
         {
             InitializeComponent();
-            InitializeMessageQueue();
+            _messageQueueService = new MessageQueueService();
         }
-        
+
         private void btn_send_message_Click(object sender, EventArgs e)
         {
-            _messageQueueService.SendMessage(tb_message.Text);
+            _ = Task.Run(async () =>
+                  await _messageQueueService.SendMessageAsync(_paymentsQueueName, tb_message.Text)
+            );
         }
 
-        private void InitializeMessageQueue()
+        private async void btn_read_Click(object sender, EventArgs e)
         {
-            _messageQueueService = new MessageQueueManager.Services.MessageQueueManager();
-            _messageQueueService.CreateMessageQueue(_paymentsQueue);
-        }
+            var message = await _messageQueueService.ReadMessageAsync(_paymentsQueueName);
 
-        private void btn_read_Click(object sender, EventArgs e)
-        {
-            tb_received_messages.Text = $"{tb_received_messages.Text} \n {_messageQueueService.ReadMessage()}";
+            tb_received_messages.Text = $"{tb_received_messages.Text} \n {message}";
         }
 
         private void btn_Clear_Click(object sender, EventArgs e)

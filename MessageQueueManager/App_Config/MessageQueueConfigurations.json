@@ -1,11 +1,19 @@
 {
   "MessageQueueConfigurations": [
     {
-      "Name": "EmailCampainRegistrationQueue",
+      "Name": "PaymentQueue",
       "IpAddress": "",
-      "IsPrivateQueue": "",
-      "IsTcpEnabled": "",
-      "IsTransactional": "",
+      "IsPrivateQueue": "true",
+      "IsTcpEnabled": "false",
+      "IsTransactional": "true",
+      "IsPersistQueueEnabled": "true"
+    },
+	{
+      "Name": "EmailQueue",
+      "IpAddress": "",
+      "IsPrivateQueue": "true",
+      "IsTcpEnabled": "false",
+      "IsTransactional": "true",
       "IsPersistQueueEnabled": "true"
     }
   ]
