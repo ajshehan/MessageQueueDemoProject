@@ -11,20 +11,20 @@ namespace MessageQueueManager.Tests.Services
     {
         private const string MessageQueueName = "";
 
-        private Mock<IMessageQueueConfigurationBuilder> _messageQueueConfigurationBuilder;
-        private Mock<IMessageBuilderService> _messageBuilderService;
+        private Mock<IMessageQueueConfigurationBuilder> _messageQueueConfigurationBuilderMock;
+        private Mock<IMessageBuilderService> _messageBuilderServiceMock;
 
         private IMessageQueueService _service;
 
         [SetUp]
         public void Setup()
         {
-            _messageQueueConfigurationBuilder = new Mock<IMessageQueueConfigurationBuilder>();
-            _messageBuilderService = new Mock<IMessageBuilderService>();
+            _messageQueueConfigurationBuilderMock = new Mock<IMessageQueueConfigurationBuilder>();
+            _messageBuilderServiceMock = new Mock<IMessageBuilderService>();
 
             _service = new MessageQueueService(
-                _messageQueueConfigurationBuilder.Object,
-                _messageBuilderService.Object
+                _messageQueueConfigurationBuilderMock.Object,
+                _messageBuilderServiceMock.Object
                 );
         }
 
@@ -59,6 +59,14 @@ namespace MessageQueueManager.Tests.Services
         {
             //Arrange
             var message = string.Empty;
+
+            _messageQueueConfigurationBuilderMock
+                .Setup(x => x.GetQueueConfigurations(It.IsAny<string>()))
+                .Returns(Task.FromResult(new DataModels.MessageQueueConfigurations { 
+                    Name = MessageQueueName,
+                    Path = "",
+                    IsPrivateQueue = true
+                }));
 
             //Act
             var result = await _service.SendMessageAsync(MessageQueueName, message);
